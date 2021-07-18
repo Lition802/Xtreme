@@ -383,22 +383,7 @@ namespace Xtreme
         /// 
         /// </summary>
         public int ptr2 { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int ptr3 { get; set; }
 
-    }
-    public class HideSeed
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool enable { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int seed { get; set; }
     }
     public class Setting
     {
@@ -462,10 +447,6 @@ namespace Xtreme
         /// 赏金猎人
         /// </summary>
         public Hunter hunter { get; set; }
-        /// <summary>
-        /// 假种子
-        /// </summary>
-        public HideSeed hideSeed { get; set; }
         /// <summary>
         /// tpa
         /// </summary>

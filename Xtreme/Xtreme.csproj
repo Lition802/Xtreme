@@ -210,6 +210,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="hook.cs" />
     <Compile Include="Modules\AUTOCLEAR.cs" />
     <Compile Include="Modules\BACK.cs" />
     <Compile Include="BDS\Component.cs" />
@@ -217,15 +218,25 @@
     <Compile Include="BDS\MCCSAPI.cs" />
     <Compile Include="BDS\Plugin.cs" />
     <Compile Include="cfg.cs" />
+    <Compile Include="Modules\BALANCE.cs" />
+    <Compile Include="Modules\BAN.cs" />
     <Compile Include="Modules\CHAT.cs" />
+    <Compile Include="Modules\DEATHPUNISH.cs" />
     <Compile Include="Modules\ECONADMIN.cs" />
+    <Compile Include="Modules\HITOKOTO.cs" />
     <Compile Include="Modules\HOME.cs" />
     <Compile Include="leveldb.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="GUI.cs" />
-    <Compile Include="hook.cs" />
     <Compile Include="jsons.cs" />
+    <Compile Include="Modules\HUNTER.cs" />
+    <Compile Include="Modules\ITEMDB.cs" />
+    <Compile Include="Modules\MENU.cs" />
+    <Compile Include="Modules\OFFLINEMONEY.cs" />
+    <Compile Include="Modules\PAY.cs" />
+    <Compile Include="Modules\SIGN.cs" />
     <Compile Include="Modules\TIMER.cs" />
+    <Compile Include="Modules\TPP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Modules\TPA.cs" />
   </ItemGroup>
