@@ -12,17 +12,7 @@ namespace Xtreme
     {
         public static void back(Setting cfg, MCCSAPI api)
         {
-            string GetUUID(string p)
-            {
-                var j = JArray.Parse(api.getOnLinePlayers());
-                foreach (var i in j)
-                {
-                    if (i["playername"].ToString() == p)
-                        return i["uuid"].ToString();
-                }
-                Console.WriteLine("[Xtreme] 无法查询玩家" + p + "的UUID!");
-                return null;
-            }
+            var helper = new Helper(api);
             var dies = new Dictionary<string, Home>();
             void addvalue(string p, Home vec)
             {
@@ -61,26 +51,26 @@ namespace Xtreme
                     {
                         if (cfg.back.cost.enable)
                         {
-                            if (api.getscoreboard(GetUUID(a.playername), cfg.back.cost.scoreboard) >= cfg.back.cost.money)
+                            if (api.getscoreboard(helper.GetUUID(a.playername), cfg.back.cost.scoreboard) >= cfg.back.cost.money)
                             {
-                                api.setscoreboard(GetUUID(a.playername), cfg.back.cost.scoreboard, api.getscoreboard(GetUUID(a.playername), cfg.back.cost.scoreboard) - cfg.back.cost.money);
+                                api.setscoreboard(helper.GetUUID(a.playername), cfg.back.cost.scoreboard, api.getscoreboard(helper.GetUUID(a.playername), cfg.back.cost.scoreboard) - cfg.back.cost.money);
                                 SymCall.teleport(api, a.playerPtr, dies[a.playername].x, dies[a.playername].y, dies[a.playername].z, dies[a.playername].dimid);
-                                api.sendText(GetUUID(a.playername), cfg.back.cost.message.moneyEnough.Replace("%money%", cfg.back.cost.money.ToString()));
+                                api.sendText(helper.GetUUID(a.playername), cfg.back.cost.message.moneyEnough.Replace("%money%", cfg.back.cost.money.ToString()));
                             }
                             else
                             {
-                                api.sendText(GetUUID(a.playername), cfg.back.cost.message.moneyInsufficient.Replace("%money%", cfg.back.cost.money.ToString()));
+                                api.sendText(helper.GetUUID(a.playername), cfg.back.cost.message.moneyInsufficient.Replace("%money%", cfg.back.cost.money.ToString()));
                             }
                         }
                         else
                         {
                             SymCall.teleport(api, a.playerPtr, dies[a.playername].x, dies[a.playername].y, dies[a.playername].z, dies[a.playername].dimid);
-                            api.sendText(GetUUID(a.playername), "[BACK] 成功返回上一死亡点!");
+                            api.sendText(helper.GetUUID(a.playername), "[BACK] 成功返回上一死亡点!");
                         }
                     }
                     else
                     {
-                        api.sendText(GetUUID(a.playername), "[BACK] 找不到死亡点!");
+                        api.sendText(helper.GetUUID(a.playername), "[BACK] 找不到死亡点!");
                     }
                     return false;
                 }

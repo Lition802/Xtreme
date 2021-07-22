@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Xtreme
 {
+    
     class _TPA
     {
         public static void tpa(MCCSAPI api)
@@ -16,20 +17,9 @@ namespace Xtreme
             var modle = new Dictionary<string, uint>();
             var tpm = new Dictionary<string, string>();
             var tpp = new Dictionary<string, string>();
-            string GetUUID(string p)
-            {
-                var j = JArray.Parse(api.getOnLinePlayers());
-                foreach (var i in j)
-                {
-                    if (i["playername"].ToString() == p)
-                        return i["uuid"].ToString();
-                }
-                Console.WriteLine("[Xtreme] 无法查询玩家" + p + "的UUID!");
-                return null;
-            }
+            var helper = new Helper(api);
             void addvalue(int m, string k, object v)
             {
-                //Console.WriteLine($"添加{m},{k},{v}");
                 switch (m)
                 {
                     case 0:
@@ -84,7 +74,7 @@ namespace Xtreme
                     gui.AddDropdown("选择要传送的玩家", 0, Xtreme.onlines.ToArray());
                     gui.AddDropdown("传送模式", 0, new string[] { "传送自己到玩家", "传送玩家到自己" });
                     addvalue(1, a.playername, 0);
-                    addvalue(0, a.playername, gui.SendToPlayer(GetUUID(a.playername)));
+                    addvalue(0, a.playername, gui.SendToPlayer(helper.GetUUID(a.playername)));
                     return false;
                 }
                 return true;
@@ -102,28 +92,26 @@ namespace Xtreme
                             string topl = Xtreme.onlines.ToArray()[int.Parse(j[0].ToString())];
                             if (topl == a.playername)
                             {
-                                api.sendText(GetUUID(a.playername), "不允许传送自己！");
+                                api.sendText(helper.GetUUID(a.playername), "不允许传送自己！");
                                 return true;
                             }
                             switch (int.Parse(j[1].ToString()))
                             {
                                 case 0:
-                                    //iffeedback = true;
-                                    //api.runcmd("tp \"" + a.playername + "\" \"" + topl + "\"");
-                                    api.sendText(GetUUID(a.playername), "传送请求已发送");
+                                    api.sendText(helper.GetUUID(a.playername), "传送请求已发送");
                                     addvalue(1, topl, 1);
                                     addvalue(2, topl, a.playername);
                                     addvalue(3, topl, "to");
-                                    api.sendText(GetUUID(topl), "[TPA] " + a.playername + "想传送到你的位置");
-                                    addvalue(0, topl, api.sendModalForm(GetUUID(topl), "TPA", a.playername + "想传送到你的位置", "允许", "不允许"));
+                                    api.sendText(helper.GetUUID(topl), "[TPA] " + a.playername + "想传送到你的位置");
+                                    addvalue(0, topl, api.sendModalForm(helper.GetUUID(topl), "TPA", a.playername + "想传送到你的位置", "允许", "不允许"));
                                     break;
                                 case 1:
-                                    api.sendText(GetUUID(a.playername), "传送请求已发送");
+                                    api.sendText(helper.GetUUID(a.playername), "传送请求已发送");
                                     addvalue(1, topl, 1);
                                     addvalue(2, topl, a.playername);
                                     addvalue(3, topl, "for");
-                                    api.sendText(GetUUID(topl), "[TPA] " + a.playername + "想要你传送到他的位置");
-                                    addvalue(0, topl, api.sendModalForm(GetUUID(topl), "TPA", a.playername + "想要你传送到他的位置", "允许", "不允许"));
+                                    api.sendText(helper.GetUUID(topl), "[TPA] " + a.playername + "想要你传送到他的位置");
+                                    addvalue(0, topl, api.sendModalForm(helper.GetUUID(topl), "TPA", a.playername + "想要你传送到他的位置", "允许", "不允许"));
                                     break;
                             }
                         }
@@ -146,7 +134,7 @@ namespace Xtreme
                             }
                             else
                             {
-                                api.sendText(GetUUID(tpp[a.playername]), a.playername + "拒绝了你的传送请求");
+                                api.sendText(helper.GetUUID(tpp[a.playername]), a.playername + "拒绝了你的传送请求");
                             }
                         }
 

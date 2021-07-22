@@ -15,17 +15,7 @@ namespace Xtreme
 
         public static void home(Setting cfg, MCCSAPI api)
         {
-            string GetUUID(string p)
-            {
-                var j = JArray.Parse(api.getOnLinePlayers());
-                foreach (var i in j)
-                {
-                    if (i["playername"].ToString() == p)
-                        return i["uuid"].ToString();
-                }
-                Console.WriteLine("[Xtreme] 无法查询玩家" + p + "的UUID!");
-                return null;
-            }
+            var helper = new Helper(api);
             api.setCommandDescribe("home", "家园面板");
             if (!File.Exists("./plugins/Xtreme/home.json"))
             {
@@ -100,7 +90,7 @@ namespace Xtreme
                 if (a.cmd == "/home")
                 {
                     addvalue(1, a.playername, "main");
-                    addvalue(0, a.playername, api.sendSimpleForm(GetUUID(a.playername), "HOME", "请选择选项", "[\"添加HOME\",\"删除HOME\",\"传送到HOME\"]"));
+                    addvalue(0, a.playername, api.sendSimpleForm(helper.GetUUID(a.playername), "HOME", "请选择选项", "[\"添加HOME\",\"删除HOME\",\"传送到HOME\"]"));
                     return false;
                 }
                 return true;
@@ -122,7 +112,7 @@ namespace Xtreme
                                         getHomeList(a.playername);
                                         if (homes[a.playername].Count == cfg.home.max)
                                         {
-                                            api.sendText(GetUUID(a.playername), "[HOME] 数量达到上限");
+                                            api.sendText(helper.GetUUID(a.playername), "[HOME] 数量达到上限");
                                             return true;
                                         }
                                         addvalue(1, a.playername, "add");
@@ -169,14 +159,14 @@ namespace Xtreme
                                 var ses = int.Parse(a.selected);
                                 var hom = GetHome(a.playername, ses);
                                 homes[a.playername].Remove(hom);
-                                api.sendText(GetUUID(a.playername), "[HOME] 已删除：" + hom);
+                                api.sendText(helper.GetUUID(a.playername), "[HOME] 已删除：" + hom);
                                 save();
                                 break;
                             case "tp":
                                 var sss = int.Parse(a.selected);
                                 var ho = GetHome(a.playername, sss);
                                 SymCall.teleport(api, a.playerPtr, homes[a.playername][ho].x, homes[a.playername][ho].y, homes[a.playername][ho].z, homes[a.playername][ho].dimid);
-                                api.sendText(GetUUID(a.playername), "[HOME] 你已传送到：" + ho);
+                                api.sendText(helper.GetUUID(a.playername), "[HOME] 你已传送到：" + ho);
                                 break;
                         }
                     }

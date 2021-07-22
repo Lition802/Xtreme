@@ -13,17 +13,7 @@ namespace Xtreme
     {
         public static void itemdb(Setting cfg,MCCSAPI api)
         {
-            string GetUUID(string p)
-            {
-                var j = JArray.Parse(api.getOnLinePlayers());
-                foreach (var i in j)
-                {
-                    if (i["playername"].ToString() == p)
-                        return i["uuid"].ToString();
-                }
-                Console.WriteLine("[Xtreme] 无法查询玩家" + p + "的UUID!");
-                return null;
-            }
+            var helper = new Helper(api);
             api.setCommandDescribe("itemdb", "查看手中物品");
             api.addBeforeActListener(EventKey.onInputCommand, x =>
             {
@@ -33,7 +23,7 @@ namespace Xtreme
                     var pl = new CsPlayer(api, a.playerPtr);
                     var h = JsonConvert.DeserializeObject<List<HandContainer>>(pl.HandContainer).ToArray();
                     string dbg = "物品id:" + h[0].id + "\n物品名称" + h[0].item;
-                    api.sendText(GetUUID(a.playername), dbg);
+                    api.sendText(helper.GetUUID(a.playername), dbg);
                     return false;
                 }
                 return true;

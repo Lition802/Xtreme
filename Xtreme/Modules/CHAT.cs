@@ -12,17 +12,7 @@ namespace Xtreme
     {
         public static void chat(Setting cfg,MCCSAPI api)
         {
-            string GetUUID(string p)
-            {
-                var j = JArray.Parse(api.getOnLinePlayers());
-                foreach (var i in j)
-                {
-                    if (i["playername"].ToString() == p)
-                        return i["uuid"].ToString();
-                }
-                Console.WriteLine("[Xtreme] 无法查询玩家" + p + "的UUID!");
-                return null;
-            }
+            var helper = new Helper(api);
             api.addBeforeActListener(EventKey.onInputText, x =>
             {
                 var a = BaseEvent.getFrom(x) as InputTextEvent;
@@ -45,14 +35,14 @@ namespace Xtreme
                             case 1:
                                 return false;
                             case 2:
-                                api.sendText(GetUUID(a.playername), cfg.Chat.message);
+                                api.sendText(helper.GetUUID(a.playername), cfg.Chat.message);
                                 return false;
                         }
                     }
                 }
                 if (ifre)
                 {
-                    api.talkAs(GetUUID(a.playername), msg);
+                    api.talkAs(helper.GetUUID(a.playername), msg);
                     return false;
                 }
                 return true;

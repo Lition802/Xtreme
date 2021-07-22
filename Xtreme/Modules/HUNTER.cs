@@ -14,17 +14,7 @@ namespace Xtreme
     {
         public static void hunter(Setting cfg,MCCSAPI api)
         {
-            string GetUUID(string p)
-            {
-                var j = JArray.Parse(api.getOnLinePlayers());
-                foreach (var i in j)
-                {
-                    if (i["playername"].ToString() == p)
-                        return i["uuid"].ToString();
-                }
-                Console.WriteLine("[Xtreme] 无法查询玩家" + p + "的UUID!");
-                return null;
-            }
+            var helper = new Helper(api);
             Dictionary<string, int> ht = new Dictionary<string, int>();
             try
             {
@@ -45,8 +35,8 @@ namespace Xtreme
                         //Console.WriteLine(new CsActor(api, a.mobPtr).TypeId);
                         if (ht.ContainsKey(a.mobtype))
                         {
-                            api.setscoreboard(GetUUID(a.srcname), cfg.hunter.scoreboard, api.getscoreboard(GetUUID(a.srcname), cfg.hunter.scoreboard) + ht[a.mobtype]);
-                            api.sendText(GetUUID(a.srcname), cfg.hunter.message.Replace("%money%", ht[a.mobtype].ToString()));
+                            api.setscoreboard(helper.GetUUID(a.srcname), cfg.hunter.scoreboard, api.getscoreboard(helper.GetUUID(a.srcname), cfg.hunter.scoreboard) + ht[a.mobtype]);
+                            api.sendText(helper.GetUUID(a.srcname), cfg.hunter.message.Replace("%money%", ht[a.mobtype].ToString()));
                         }
                     }
                 }

@@ -16,67 +16,12 @@ namespace Xtreme
         public static void tpp(MCCSAPI api)
         {
             api.setCommandDescribe("tpp", "跨维度传送");
-            bool ifop(string xuid)
-            {
-                foreach (JToken playerData in JArray.Parse(File.ReadAllText("permissions.json")))
-                {
-                    if ($"{playerData["xuid"]}" == xuid && $"{playerData["permission"]}" == "operator")
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            string GetUUID(string p)
-            {
-                var j = JArray.Parse(api.getOnLinePlayers());
-                foreach (var i in j)
-                {
-                    if (i["playername"].ToString() == p)
-                        return i["uuid"].ToString();
-                }
-                Console.WriteLine("[Xtreme] 无法查询玩家" + p + "的UUID!");
-                return null;
-            }
-            string GetXUID(string p)
-            {
-                var jo = JArray.Parse(api.getOnLinePlayers());
-                foreach (var i in jo)
-                {
-                    if (i["playername"].ToString() == p)
-                        return i["xuid"].ToString();
-                }
-                Console.WriteLine($"[Xtreme] 无法找到玩家{p}的XUID!");
-                return null;
-
-            }
-            IntPtr getPtr(string p)
-            {
-                if (GetUUID(p) != null)
-                {
-                    var data = api.selectPlayer(GetUUID(p));
-                    //Console.WriteLine(data);
-                    if (!string.IsNullOrEmpty(data))
-                    {
-                        var pinfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
-                        if (pinfo != null)
-                        {
-                            object pptr;
-                            if (pinfo.TryGetValue("playerptr", out pptr))
-                            {
-                                var ptr = (IntPtr)Convert.ToInt64(pptr);
-                                return ptr;
-                            }
-                        }
-                    }
-                }
-                return IntPtr.Zero;
-            }
+            var helper = new Helper(api);
             api.addBeforeActListener(EventKey.onInputCommand, x =>
             {
                 var a = BaseEvent.getFrom(x) as InputCommandEvent;
                 var cmd = a.cmd.Split(' ');
-                if (cmd[0] == "/tpp" && ifop(GetXUID(a.playername)))
+                if (cmd[0] == "/tpp" && helper.ifop(helper.GetXUID(a.playername)))
                 {
                     if (cmd.Length == 5)
                     {
@@ -86,13 +31,13 @@ namespace Xtreme
                         }
                         catch
                         {
-                            api.sendText(GetUUID(a.playername), "输入的数据类型有误");
+                            api.sendText(helper.GetUUID(a.playername), "输入的数据类型有误");
                         }
 
                     }
                     else
                     {
-                        api.sendText(GetUUID(a.playername), "使用方法：/tpp <int:x> <int:y> <int:z> <int:did>");
+                        api.sendText(helper.GetUUID(a.playername), "使用方法：/tpp <int:x> <int:y> <int:z> <int:did>");
                     }
                     return false;
                 }
@@ -112,11 +57,11 @@ namespace Xtreme
                     {
                         if (cmd.Length == 6)
                         {
-                            if (getPtr(cmd[1]) != IntPtr.Zero)
+                            if (helper.getPtr(cmd[1]) != IntPtr.Zero)
                             {
                                 try
                                 {
-                                    SymCall.teleport(api, getPtr(cmd[1]), Convert.ToSingle(cmd[2]), Convert.ToSingle(cmd[3]), Convert.ToSingle(cmd[4]), int.Parse(cmd[5]));
+                                    SymCall.teleport(api, helper.getPtr(cmd[1]), Convert.ToSingle(cmd[2]), Convert.ToSingle(cmd[3]), Convert.ToSingle(cmd[4]), int.Parse(cmd[5]));
                                 }
                                 catch (Exception e)
                                 {
@@ -138,9 +83,9 @@ namespace Xtreme
                     {
                         try
                         {
-                            if (getPtr(value) != IntPtr.Zero)
+                            if (helper.getPtr(value) != IntPtr.Zero)
                             {
-                                SymCall.teleport(api, getPtr(value), Convert.ToSingle(cmd[cmd.Length - 4]), Convert.ToSingle(cmd[cmd.Length - 3]), Convert.ToSingle(cmd[cmd.Length - 2]), int.Parse(cmd[cmd.Length - 1]));
+                                SymCall.teleport(api, helper.getPtr(value), Convert.ToSingle(cmd[cmd.Length - 4]), Convert.ToSingle(cmd[cmd.Length - 3]), Convert.ToSingle(cmd[cmd.Length - 2]), int.Parse(cmd[cmd.Length - 1]));
                             }
                             else
                             {

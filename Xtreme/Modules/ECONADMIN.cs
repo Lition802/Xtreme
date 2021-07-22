@@ -13,29 +13,7 @@ namespace Xtreme
     {
         public static void econadmin(Setting cfg,MCCSAPI api)
         {
-            string GetUUID(string p)
-            {
-                var j = JArray.Parse(api.getOnLinePlayers());
-                foreach (var i in j)
-                {
-                    if (i["playername"].ToString() == p)
-                        return i["uuid"].ToString();
-                }
-                Console.WriteLine("[Xtreme] 无法查询玩家" + p + "的UUID!");
-                return null;
-            }
-            string GetXUID(string p)
-            {
-                foreach (JToken playerData in JArray.Parse(api.getOnLinePlayers()))
-                {
-                    if ($"{playerData["playername"]}" == p)
-                    {
-                        return $"{playerData["xuid"]}";
-                    }
-                }
-                Console.WriteLine("[Xtreme] 无法查询玩家" + p + "的XUID!");
-                return null;
-            }
+            var helper = new Helper(api);
             api.setCommandDescribe("econadmin", "经济管理");
             var formid = new Dictionary<string, uint>();
             var modle = new Dictionary<string, string>();
@@ -81,30 +59,19 @@ namespace Xtreme
                 string re = "[";
                 foreach (var i in Xtreme.onlines)
                 {
-                    re += "\"" + i + "\n$" + api.getscoreboard(GetUUID(i), cfg.econadmin.scoreboard) + "\",";
+                    re += "\"" + i + "\n$" + api.getscoreboard(helper.GetUUID(i), cfg.econadmin.scoreboard) + "\",";
                 }
                 return re.Substring(0, re.Length - 1) + "]";
-            }
-            bool ifop(string xuid)
-            {
-                foreach (JToken playerData in JArray.Parse(File.ReadAllText("permissions.json")))
-                {
-                    if ($"{playerData["xuid"]}" == xuid && $"{playerData["permission"]}" == "operator")
-                    {
-                        return true;
-                    }
-                }
-                return false;
             }
             api.addBeforeActListener(EventKey.onInputCommand, x =>
             {
                 var a = BaseEvent.getFrom(x) as InputCommandEvent;
                 if (a.cmd == "/econadmin")
                 {
-                    if (ifop(GetXUID(a.playername)))
+                    if (helper.ifop(helper.GetXUID(a.playername)))
                     {
                         addvalue(1, a.playername, "main");
-                        addvalue(0, a.playername, api.sendSimpleForm(GetUUID(a.playername), "EconAdmin", "", GetJson()));
+                        addvalue(0, a.playername, api.sendSimpleForm(helper.GetUUID(a.playername), "EconAdmin", "", GetJson()));
                         return false;
                     }
                 }
@@ -142,14 +109,14 @@ namespace Xtreme
                             }
                             if (int.Parse(se[0].ToString()) == 0)
                             {
-                                api.setscoreboard(GetUUID(chpl[a.playername]), cfg.econadmin.scoreboard, api.getscoreboard(GetUUID(chpl[a.playername]), cfg.econadmin.scoreboard) + m);
+                                api.setscoreboard(helper.GetUUID(chpl[a.playername]), cfg.econadmin.scoreboard, api.getscoreboard(helper.GetUUID(chpl[a.playername]), cfg.econadmin.scoreboard) + m);
                                 api.sendText(a.uuid, $"成功为{chpl[a.playername]}添加{m}到{cfg.econadmin.scoreboard}");
                             }
                             else
                             {
-                                if (api.getscoreboard(GetUUID(chpl[a.playername]), cfg.econadmin.scoreboard) >= m)
+                                if (api.getscoreboard(helper.GetUUID(chpl[a.playername]), cfg.econadmin.scoreboard) >= m)
                                 {
-                                    api.setscoreboard(GetUUID(chpl[a.playername]), cfg.econadmin.scoreboard, api.getscoreboard(GetUUID(chpl[a.playername]), cfg.econadmin.scoreboard) - m);
+                                    api.setscoreboard(helper.GetUUID(chpl[a.playername]), cfg.econadmin.scoreboard, api.getscoreboard(helper.GetUUID(chpl[a.playername]), cfg.econadmin.scoreboard) - m);
                                     api.sendText(a.uuid, $"成功为{chpl[a.playername]}扣除{m}到{cfg.econadmin.scoreboard}");
                                 }
                                 else

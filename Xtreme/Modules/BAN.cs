@@ -34,23 +34,12 @@ namespace Xtreme
         }
         public static void localban(Setting cfg, MCCSAPI api)
         {
-            string GetUUID(string p)
-            {
-                var j = JArray.Parse(api.getOnLinePlayers());
-                foreach (var i in j)
-                {
-                    if (i["playername"].ToString() == p)
-                        return i["uuid"].ToString();
-                }
-                Console.WriteLine("[Xtreme] 无法查询玩家" + p + "的UUID!");
-                return null;
-            }
             api.addBeforeActListener(EventKey.onLoadName, x =>
             {
                 var a = BaseEvent.getFrom(x) as LoadNameEvent;
                 if (cfg.Ban.localBan.hackers.Contains(a.playername))
                 {
-                    api.disconnectClient(GetUUID(a.playername), cfg.Ban.localBan.messsage);
+                    api.disconnectClient(a.uuid, cfg.Ban.localBan.messsage);
                     Console.WriteLine($"[Xtreme] 玩家{a.playername}在本地黑名单中有登记记录，已断开连接");
                 }
                 Console.WriteLine($"[Xtreme] 玩家{a.playername}的本地黑名单检查已完成");

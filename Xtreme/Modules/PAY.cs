@@ -12,17 +12,7 @@ namespace Xtreme
     {
         public static void pay(Setting cfg,MCCSAPI api)
         {
-            string GetUUID(string p)
-            {
-                var j = JArray.Parse(api.getOnLinePlayers());
-                foreach (var i in j)
-                {
-                    if (i["playername"].ToString() == p)
-                        return i["uuid"].ToString();
-                }
-                Console.WriteLine("[Xtreme] 无法查询玩家" + p + "的UUID!");
-                return null;
-            }
+            var helper = new Helper(api);
             api.setCommandDescribe("pay", "转账");
             var formid = new Dictionary<string, uint>();
             api.addBeforeActListener(EventKey.onInputCommand, x =>
@@ -35,11 +25,11 @@ namespace Xtreme
                     gui.AddInput("请输入转账金额");
                     try
                     {
-                        formid.Add(a.playername, gui.SendToPlayer(GetUUID(a.playername)));
+                        formid.Add(a.playername, gui.SendToPlayer(helper.GetUUID(a.playername)));
                     }
                     catch
                     {
-                        formid[a.playername] = gui.SendToPlayer(GetUUID(a.playername));
+                        formid[a.playername] = gui.SendToPlayer(helper.GetUUID(a.playername));
                     }
                     return false;
                 }
@@ -68,7 +58,7 @@ namespace Xtreme
                         if (api.getscoreboard(a.uuid, cfg.Pay.scoreboard) >= m)
                         {
                             api.setscoreboard(a.uuid, cfg.Pay.scoreboard, api.getscoreboard(a.uuid, cfg.Pay.scoreboard) - m);
-                            api.setscoreboard(GetUUID(topl), cfg.Pay.scoreboard, api.getscoreboard(GetUUID(topl), cfg.Pay.scoreboard) + m);
+                            api.setscoreboard(helper.GetUUID(topl), cfg.Pay.scoreboard, api.getscoreboard(helper.GetUUID(topl), cfg.Pay.scoreboard) + m);
                             api.sendText(a.uuid, cfg.Pay.message.moneyEnough.Replace("%playername%", topl).Replace("%money%", m.ToString()));
                         }
                         else

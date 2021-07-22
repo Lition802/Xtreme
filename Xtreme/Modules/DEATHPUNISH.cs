@@ -12,31 +12,21 @@ namespace Xtreme
     {
         public static void deathpunish(Setting cfg, MCCSAPI api)
         {
-            string GetUUID(string p)
-            {
-                var j = JArray.Parse(api.getOnLinePlayers());
-                foreach (var i in j)
-                {
-                    if (i["playername"].ToString() == p)
-                        return i["uuid"].ToString();
-                }
-                Console.WriteLine("[Xtreme] 无法查询玩家" + p + "的UUID!");
-                return null;
-            }
+            var helper = new Helper(api);
             api.addBeforeActListener(EventKey.onMobDie, x =>
             {
                 var a = BaseEvent.getFrom(x) as MobDieEvent;
                 if (a.playername != null)
                 {
-                    if (api.getscoreboard(GetUUID(a.playername), cfg.DeathPunish.scoreboard) - cfg.DeathPunish.count > 0)
+                    if (api.getscoreboard(helper.GetUUID(a.playername), cfg.DeathPunish.scoreboard) - cfg.DeathPunish.count > 0)
                     {
-                        int bk = api.getscoreboard(GetUUID(a.playername), cfg.DeathPunish.scoreboard) - cfg.DeathPunish.count;
-                        api.setscoreboard(GetUUID(a.playername), cfg.DeathPunish.scoreboard, bk);
-                        api.sendText(GetUUID(a.playername), cfg.DeathPunish.message.moneyEnough.Replace("%money%", cfg.DeathPunish.count.ToString()));
+                        int bk = api.getscoreboard(helper.GetUUID(a.playername), cfg.DeathPunish.scoreboard) - cfg.DeathPunish.count;
+                        api.setscoreboard(helper.GetUUID(a.playername), cfg.DeathPunish.scoreboard, bk);
+                        api.sendText(helper.GetUUID(a.playername), cfg.DeathPunish.message.moneyEnough.Replace("%money%", cfg.DeathPunish.count.ToString()));
                     }
                     else
                     {
-                        api.sendText(GetUUID(a.playername), cfg.DeathPunish.message.moneyInsufficient);
+                        api.sendText(helper.GetUUID(a.playername), cfg.DeathPunish.message.moneyInsufficient);
                     }
                 }
                 return true;

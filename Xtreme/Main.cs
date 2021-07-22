@@ -4,18 +4,11 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
+using System.Text;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using System.Net;
-using System.Threading.Tasks;
-using System.Text;
-using LMenuConfig;
-using System.Net.Security;
-using System.Security.Authentication;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
+using System.Reflection;
 
 namespace Xtreme
 {
@@ -36,6 +29,7 @@ namespace Xtreme
         };
     public static void Maximum(MCCSAPI api)
         {
+            var logger = new logger();
             Directory.CreateDirectory("./plugins/Xtreme");
             if (File.Exists("./plugins/Xtreme/offlineMoney.yaml") == false)
             {
@@ -258,24 +252,24 @@ namespace Xtreme
                 }
                 addvalue(SymCall.ptr1, cfg.@unsafe.ptr1);
                 addvalue(SymCall.ptr2, cfg.@unsafe.ptr2);
-                Console.WriteLine("[WARN][Xtreme] 您正在使用unsafe模式，数据错误可能会造成服务器崩溃");
+                logger.LogWarn("您正在使用unsafe模式，数据错误可能会造成服务器崩溃");
             }        
             if (cfg.version != version)
             {
-                Console.WriteLine("[Xtreme] 您的配置文件版本过旧，请备份后重新生成");
-                Console.WriteLine("[Xtreme] 为安全考虑，已放弃加载");
+                logger.LogError("您的配置文件版本过旧，请备份后重新生成");
+                logger.LogError("为安全考虑，已放弃加载");
                 return;
             }
             _AUTOCLEAR.clear(cfg, api);
             _OFFLINEMONEY.offlinemoney(cfg, api);
             if (cfg.Timer.enable)
             {
-                Console.WriteLine("[Xtreme] 成功加载"+cfg.Timer.cmds.Keys.Count+"条定时任务");
+                logger.Log("成功加载"+cfg.Timer.cmds.Keys.Count+"条定时任务");
                 _TIMER.timer(cfg, api);
             }  
             if (cfg.DeathPunish.enable)
             {
-                Console.WriteLine("[Xtreme] 死亡惩罚组件开启成功");
+                logger.Log("死亡惩罚组件开启成功");
                 _DEATHPUNISH.deathpunish(cfg, api);
             }
             api.addBeforeActListener(EventKey.onServerCmdOutput, x =>
@@ -291,28 +285,28 @@ namespace Xtreme
             });
             if (cfg.Chat.enable)
             {
-                Console.WriteLine("[Xtreme] 聊天管理组件加载成功");
-                Console.WriteLine("[Xtreme] 已载入本地敏感词库" + cfg.Chat.dirty.Keys.Count + "个");
+                logger.Log("聊天管理组件加载成功");
+                logger.Log("已载入本地敏感词库" + cfg.Chat.dirty.Keys.Count + "个");
                 _CHAT.chat(cfg, api);
             }
             if (cfg.Itemdb.enable)
             {
-                Console.WriteLine("[Xtreme] 物品调试组件开启成功");
+                logger.Log("物品调试组件开启成功");
                 _ITEMDB.itemdb(cfg, api);
             }
             if (cfg.Ban.blackbe.enable)
             {
-                Console.WriteLine("[Xtreme] 云黑组件开启成功");
+                logger.Log("云黑组件开启成功");
                 _BAN.cloudban(cfg, api);
             }
             if (cfg.Ban.localBan.enable)
             {
-                Console.WriteLine("[Xtreme] 本地黑名单组件开启成功");
+                logger.Log("本地黑名单组件开启成功");
                 _BAN.localban(cfg, api);
             }
             if (cfg.Pay.enable)
             {
-                Console.WriteLine("[Xtreme] 转账组件开启成功");
+                logger.Log("转账组件开启成功");
                 _PAY.pay(cfg, api);
             }
             if (cfg.hitokoto.enable)
@@ -321,12 +315,12 @@ namespace Xtreme
             }
             if (cfg.menu.enable)
             {
-                Console.WriteLine("[Xtreme] 菜单组件开启成功");
+                logger.Log("菜单组件开启成功");
                 _MENU.menu(cfg, api);
             }
             if (cfg.balance.enable)
             {
-                Console.WriteLine("[Xtreme] 余额查询组件开启成功");
+                logger.Log("余额查询组件开启成功");
                 _BALANCE.balance(cfg, api);
             }
             if (cfg.sign.enable)
@@ -335,32 +329,32 @@ namespace Xtreme
             }
             if (cfg.hunter.enable)
             {
-                Console.WriteLine("[Xtreme] 赏金猎人组件开启成功");
+                logger.Log("赏金猎人组件开启成功");
                 _HUNTER.hunter(cfg, api);
             }
             if (cfg.tpa.enable)
             {
-                Console.WriteLine("[Xtreme] TPA组件开启成功");
+                logger.Log("TPA组件开启成功");
                 _TPA.tpa(api);
             }
             if (cfg.home.enable)
             {
-                Console.WriteLine("[Xtreme] home组件开启成功");
+                logger.Log("home组件开启成功");
                 _HOME.home(cfg,api);
             }
             if (cfg.back.enable)
             {
-                Console.WriteLine("[Xtreme] back组件开启成功");
+                logger.Log("back组件开启成功");
                 _BACK.back(cfg,api);
             }
             if (cfg.tpp.enable)
             {
-                Console.WriteLine("[Xtreme] TPP组件开启成功");
+                logger.Log("TPP组件开启成功");
                 _TPP.tpp(api);
             }
             if (cfg.econadmin.enable)
             {
-                Console.WriteLine("[Xtreme] 经济管理组件开启成功");
+                logger.Log("经济管理组件开启成功");
                 _ECONADMIN.econadmin(cfg, api);
             }
             api.setSharePtr("Xtreme_tp", Marshal.GetFunctionPointerForDelegate<TELEPORT>(cs_teleport));
@@ -374,6 +368,7 @@ namespace Xtreme
             Console.WriteLine("[Xtreme] init!");
             Console.WriteLine("[Xtreme] version = " + version);
         }
+        
     }
 }
 namespace CSR

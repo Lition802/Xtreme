@@ -61,8 +61,14 @@
     <Reference Include="Costura, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.5.4.0-alpha0042\lib\netstandard1.0\Costura.dll</HintPath>
     </Reference>
-    <Reference Include="LevelDB.Net, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\LevelDB.Net.1.2.1\lib\net40\LevelDB.Net.dll</HintPath>
+    <Reference Include="Crc32.NET, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dc0b95cf99bf4e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\Crc32.NET.1.2.0\lib\net20\Crc32.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Crc32C.NET, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Crc32C.NET.1.0.5.0\lib\net20\Crc32C.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.4.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.4.1\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
@@ -71,6 +77,12 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Snappy.NET, Version=1.1.1.8, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Snappy.NET.1.1.1.8\lib\net45\Snappy.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Snappy.Sharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Snappy.Sharp.1.0.0\lib\netstandard1.1\Snappy.Sharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -210,6 +222,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\Helper.cs" />
+    <Compile Include="Helper\logger.cs" />
     <Compile Include="hook.cs" />
     <Compile Include="Modules\AUTOCLEAR.cs" />
     <Compile Include="Modules\BACK.cs" />
@@ -217,7 +231,7 @@
     <Compile Include="BDS\Events.cs" />
     <Compile Include="BDS\MCCSAPI.cs" />
     <Compile Include="BDS\Plugin.cs" />
-    <Compile Include="cfg.cs" />
+    <Compile Include="Config\cfg.cs" />
     <Compile Include="Modules\BALANCE.cs" />
     <Compile Include="Modules\BAN.cs" />
     <Compile Include="Modules\CHAT.cs" />
@@ -225,10 +239,9 @@
     <Compile Include="Modules\ECONADMIN.cs" />
     <Compile Include="Modules\HITOKOTO.cs" />
     <Compile Include="Modules\HOME.cs" />
-    <Compile Include="leveldb.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="GUI.cs" />
-    <Compile Include="jsons.cs" />
+    <Compile Include="Helper\GUI.cs" />
+    <Compile Include="Config\jsons.cs" />
     <Compile Include="Modules\HUNTER.cs" />
     <Compile Include="Modules\ITEMDB.cs" />
     <Compile Include="Modules\MENU.cs" />
