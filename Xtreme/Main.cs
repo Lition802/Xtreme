@@ -9,6 +9,7 @@ using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Xtreme
 {
@@ -16,7 +17,7 @@ namespace Xtreme
     {
         public static List<string> onlines = new List<string>();
         public static bool iffeedback = false;
-        public static string version = "1.6.6";
+        public static string version = "1.6.7";
         /// <param name="intPtr">玩家指针</param>
 		/// <param name="x">X坐标</param>
 		/// <param name="y">Y坐标</param>
@@ -30,6 +31,9 @@ namespace Xtreme
     public static void Maximum(MCCSAPI api)
         {
             var logger = new logger();
+            var update =  new Update();
+            var tmpv = update.getUpadte();
+            update.getAnnouncement();
             Directory.CreateDirectory("./plugins/Xtreme");
             if (File.Exists("./plugins/Xtreme/offlineMoney.yaml") == false)
             {

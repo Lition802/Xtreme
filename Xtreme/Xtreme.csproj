@@ -224,6 +224,7 @@
   <ItemGroup>
     <Compile Include="Helper\Helper.cs" />
     <Compile Include="Helper\logger.cs" />
+    <Compile Include="Helper\Update.cs" />
     <Compile Include="hook.cs" />
     <Compile Include="Modules\AUTOCLEAR.cs" />
     <Compile Include="Modules\BACK.cs" />
