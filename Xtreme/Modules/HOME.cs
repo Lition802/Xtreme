@@ -12,6 +12,23 @@ namespace Xtreme
 {
     class _HOME
     {
+        public static Dictionary<string, Dictionary<string, Home>> homes;
+        public static List<string> getHomeList(string p)
+            {
+            var rt = new List<string>();
+            if (homes.ContainsKey(p))
+            {
+                foreach (var k in homes[p])
+                {
+                    rt.Add(k.Key);
+                }
+            }
+            else
+            {
+                homes.Add(p, new Dictionary<string, Home>());
+            }
+            return rt;
+        }
 
         public static void home(Setting cfg, MCCSAPI api)
         {
@@ -21,7 +38,7 @@ namespace Xtreme
             {
                 File.WriteAllText("./plugins/Xtreme/home.json", "{}");
             }
-            var homes = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Home>>>(File.ReadAllText("./plugins/Xtreme/home.json"));
+            homes = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Home>>>(File.ReadAllText("./plugins/Xtreme/home.json"));
             var formid = new Dictionary<string, uint>();
             var modle = new Dictionary<string, string>();
             void addvalue(int m, string k, object v)
@@ -51,22 +68,7 @@ namespace Xtreme
                         break;
                 }
             }
-            List<string> getHomeList(string p)
-            {
-                var rt = new List<string>();
-                if (homes.ContainsKey(p))
-                {
-                    foreach (var k in homes[p])
-                    {
-                        rt.Add(k.Key);
-                    }
-                }
-                else
-                {
-                    homes.Add(p, new Dictionary<string, Home>());
-                }
-                return rt;
-            }
+            
             void save()
             {
                 File.WriteAllText("./plugins/Xtreme/home.json", JObject.Parse(JsonConvert.SerializeObject(homes)).ToString());

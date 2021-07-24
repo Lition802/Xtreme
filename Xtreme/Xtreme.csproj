@@ -222,6 +222,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\GUIBuilder.cs" />
     <Compile Include="Helper\Helper.cs" />
     <Compile Include="Helper\logger.cs" />
     <Compile Include="Helper\Update.cs" />

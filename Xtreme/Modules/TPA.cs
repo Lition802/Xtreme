@@ -70,11 +70,15 @@ namespace Xtreme
                 var a = BaseEvent.getFrom(x) as InputCommandEvent;
                 if (a.cmd == "/tpa")
                 {
+                    /*
                     var gui = new GUIS.GUIBuilder(api, "TPA");
                     gui.AddDropdown("选择要传送的玩家", 0, Xtreme.onlines.ToArray());
                     gui.AddDropdown("传送模式", 0, new string[] { "传送自己到玩家", "传送玩家到自己" });
+                    */
+                    var gui = new GUIBuilder(api, a.playername);
+                    
                     addvalue(1, a.playername, 0);
-                    addvalue(0, a.playername, gui.SendToPlayer(helper.GetUUID(a.playername)));
+                    addvalue(0, a.playername, gui.GUI("TPA.gui"));// gui.SendToPlayer(helper.GetUUID(a.playername)));
                     return false;
                 }
                 return true;

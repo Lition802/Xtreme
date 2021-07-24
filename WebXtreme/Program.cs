@@ -30,6 +30,8 @@ namespace WebXtreme
         }
         static void Main(string[] args)
         {
+
+
             var cfg =JsonConvert.DeserializeObject<Setting>(File.ReadAllText("setting.json"));
             HttpListener listener = new HttpListener();
             string address = "http://+:" + cfg.port+"/";
