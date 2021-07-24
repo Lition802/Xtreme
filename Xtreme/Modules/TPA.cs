@@ -78,7 +78,7 @@ namespace Xtreme
                     var gui = new GUIBuilder(api, a.playername);
                     
                     addvalue(1, a.playername, 0);
-                    addvalue(0, a.playername, gui.GUI("TPA.gui"));// gui.SendToPlayer(helper.GetUUID(a.playername)));
+                    addvalue(0, a.playername, gui.GUI("TPA"));// gui.SendToPlayer(helper.GetUUID(a.playername)));
                     return false;
                 }
                 return true;

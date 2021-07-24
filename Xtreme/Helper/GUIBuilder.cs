@@ -35,33 +35,32 @@ namespace Xtreme
         {
             var helper = new Helper(api);
             var j = JArray.Parse(convert_gui(path));
-            //Console.WriteLine(j);
-            var gui = new GUIS.GUIBuilder(api, j[0]["title"].ToString());
-            for(int d = 1; d < j.Count-1; d++)
+            var gui = new GUIS.GUIBuilder(api, j[0]["text"].ToString());
+            foreach (var v in j)
             {
+                //Console.WriteLine("v =>" + v["type"].ToString());
                 try
                 {
-                    switch (j[d]["type"].ToString())
+                    switch (v["type"].ToString())
                     {
                         case "Label":
-                            gui.AddLabel(j[d]["text"].ToString());
+                            gui.AddLabel(v["text"].ToString());
                             break;
                         case "Input":
-                            gui.AddInput(j[d]["text"].ToString());
+                            gui.AddInput(v["text"].ToString());
                             break;
                         case "Toggle":
-                            gui.AddToggle(j[d]["text"].ToString());
+                            gui.AddToggle(v["text"].ToString());
                             break;
                         case "Dropdown":
-                            gui.AddDropdown(j[d]["text"].ToString(), int.Parse(j[d]["_default"].ToString()), GetDropdown(j[d]["options"].ToString()));
+                            gui.AddDropdown(v["text"].ToString(), int.Parse(v["_default"].ToString()), GetDropdown(v["options"].ToString()));
                             break;
                     }
                 }
                 catch(Exception e)
                 {
                     Console.WriteLine(e);
-                }
-                
+                }               
             }
             return gui.SendToPlayer(helper.GetUUID(playername));
         }
@@ -71,8 +70,6 @@ namespace Xtreme
             var jsons = new List<Dictionary<string, string>>();           
             for (int index = 0; index < g.Length; index++)
             {
-                if (g[index].StartsWith("#"))
-                    continue;
                 var line = g[index].Split(',');
                 var dic = new Dictionary<string, string>();
                 foreach (var item in line)
