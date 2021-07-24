@@ -70,6 +70,8 @@ namespace Xtreme
             var jsons = new List<Dictionary<string, string>>();           
             for (int index = 0; index < g.Length; index++)
             {
+                if (g[index].StartsWith("#"))
+                    continue;
                 var line = g[index].Split(',');
                 var dic = new Dictionary<string, string>();
                 foreach (var item in line)

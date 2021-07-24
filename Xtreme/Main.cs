@@ -10,6 +10,8 @@ using YamlDotNet.Serialization.NamingConventions;
 using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Microsoft.Scripting.Hosting;
+using MoonSharp.Interpreter;
 
 namespace Xtreme
 {

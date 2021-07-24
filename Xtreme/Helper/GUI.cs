@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using CSR;
 
 namespace GUIS
@@ -119,6 +120,23 @@ namespace GUIS
                 new JProperty(nameof(text), text),
                 new JProperty(nameof(options),t)
             });
+        }
+        public void AddButton(string text,bool image,string data,string type)
+        {
+            var t = new JObject();
+            t.Add(new JProperty("text", text));
+            if (image)
+            {
+                var m = new JObject();
+                m.Add(new JProperty("data", data));
+                m.Add(new JProperty("type", type));
+                t.Add("image", m);
+            }
+            else
+            {
+                t.Add(new JProperty("image", null));
+            }
+            content.Add(t);
         }
         /// <summary>
         /// 发送给玩家
